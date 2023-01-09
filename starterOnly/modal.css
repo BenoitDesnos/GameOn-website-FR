@@ -207,6 +207,15 @@ input {
   border-radius: 8px;
   font-size: 20px;
   height: 48px;
+ 
+}
+.text-control.error{
+  border-color: #fe142f;;
+  color: #fe142f;
+}
+.text-control + p{
+ font-size: 15px;
+ color: #fe142f;
 }
 .formData[data-error]::after {
   content: attr(data-error);
