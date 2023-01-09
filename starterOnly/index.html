@@ -58,29 +58,29 @@
           <form name="reserve" action="index.html" method="get" >
             <div class="formData">
               <label for="first">Prénom</label><br>
-              <input class="text-control" required type="text" id="first" name="first" minlength="2" />
-              <p></p>
+              <input class="text-control"  type="text" id="first" name="first" minlength="2" />
+              <p id="first--error"></p>  
 
             </div>
             <div class="formData">
               <label for="last">Nom</label><br>
-              <input class="text-control" required type="text" id="last" name="last" />
-              <p></p>
+              <input class="text-control"  type="text" id="last" name="last" />
+              <p id="last--error"></p>  
             </div>
             <div class="formData">
               <label for="email">E-mail</label><br>
-              <input class="text-control" required type="email" id="email" name="email" />
-              <p></p>
+              <input class="text-control"  type="email" id="email" name="email" />
+              <p id="email--error"></p>  
             </div>
             <div class="formData">
               <label for="birthdate">Date de naissance</label><br>
               <input class="text-control"  type="date" id="birthdate" name="birthdate" />
-              <p></p>
+              <p id="birthdate--error"></p>  
             </div>
             <div class="formData">
               <label for="quantity">À combien de tournois GameOn avez-vous déjà participé ?</label><br>
-              <input type="number" class="text-control" required id="quantity" name="quantity" min="0" max="99">
-              <p></p>
+              <input type="number" class="text-control" id="quantity" name="quantity" min="0" max="99">
+              <p id="quantity--error"></p>  
             </div>
             <legend class="text-label">A quel tournoi souhaitez-vous participer cette année ?</legend>
             <div class="formData" id="radioContainer">
@@ -109,6 +109,7 @@
                 <span class="checkbox-icon"></span>
                 Portland</label>
             </div>
+            <p id="radioContainer--error"></p>
 
             <div class="formData">
               <input class="checkbox-input" type="checkbox" id="checkbox1" checked  />
@@ -116,7 +117,7 @@
                 <span class="checkbox-icon"></span>
                 J'ai lu et accepté les conditions d'utilisation.
               </label>
-              <br>
+              <p id="checkbox1--error"></p>             
               <input class="checkbox-input" type="checkbox" id="checkbox2" />
               <label class="checkbox2-label" for="checkbox2">
                 <span class="checkbox-icon"></span>

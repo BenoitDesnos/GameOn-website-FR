@@ -217,6 +217,14 @@ input {
  font-size: 15px;
  color: #fe142f;
 }
+#radioContainer--error{
+ font-size: 15px;
+ color: #fe142f;
+}
+#checkbox1--error{
+ font-size: 15px;
+ color: #fe142f;
+}
 .formData[data-error]::after {
   content: attr(data-error);
   font-size: 0.4em;

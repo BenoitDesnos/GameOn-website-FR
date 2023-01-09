@@ -1,23 +1,18 @@
 /* <---------------------------------------------- const et variables --------------------------------------------------------------------> */
 
-
 const form = document.querySelector("form");
-const inputs = document.querySelectorAll(
-  'input'
-);
-const checkBoxes = document.querySelectorAll(
-  'input[type="radio"]'
-);
-const usersTerms = document.getElementById(
-  'checkbox1'
-);
-const birth = document.getElementById(
-  'birthdate'
-);
+const inputs = document.querySelectorAll("input");
+const checkBoxes = document.querySelectorAll('input[type="radio"]');
+const usersTerms = document.getElementById("checkbox1");
+const quantity = document.getElementById("quantity");
 
-let isOneCityChecked = false
-let isUsersTermsAgreed = usersTerms.checked
-let isBirthEmpty = true
+let isFirstEmpty = true;
+let isLastEmpty = true;
+let isEmailEmpty = true;
+let isBirthEmpty = true;
+let isQuantitySelected = false;
+let isOneCityChecked = false;
+let isUsersTermsAgreed = usersTerms.checked;
 
 let regexText = /^([a-zA-Z-]+\s)*[a-zA-Z-]+$/g;
 let regexQuantity = /^[0-9]+$/g;
@@ -27,65 +22,84 @@ let regexEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
 
 /* <---------------------------------------------- Fonctions de verifications des inputs --------------------------------------------------------------------> */
 
-/* chaque fonction de vérification utilise en argument la value rentrée a chaque input grace à la fonction addEventListener qui les suit */
+/* Les fn ci-dessous verifient les values rentrées et retournent s'il y a une erreur ou non grâce à la fn errorDisplay*/
 
-// verifie les conditions du prénom et retourne la variable seulement si conditions remplies
+// nameChecker est utilisée pour les champs prénom et nom
 const nameChecker = (value, id) => {
-  if ( value.length < 2 || value.length > 60) {
-    errorDisplay(id, "Le Prénom/Nom doit faire entre 2 et 60 caractères");
-    firstName = null;
-  } else if (!value.match(regexText) ) {
+  if (value.length < 2 || value.length > 60) {
     errorDisplay(
       id,
-      "Le Prénom/Nom ne doit pas contenir de caractères spéciaux"
+      "Le Prénom/Nom doit faire entre 2 et 60 caractères",
+      false
     );
-    firstName = null;
+    if (id === "first") {
+      isFirstEmpty = true;
+    } else {
+      isLastEmpty = true;
+    }
+  } else if (!value.match(regexText)) {
+    errorDisplay(
+      id,
+      "Le Prénom/Nom ne doit pas contenir de caractères spéciaux",
+      false
+    );
   } else {
-    errorDisplay(id , "", true);
-    firstName = value;
+    errorDisplay(id, "", true);
+    if (id === "first") {
+      isFirstEmpty = false;
+    } else {
+      isLastEmpty = false;
+    }
   }
 };
 
-// verifie les conditions de l'email et retourne la variable seulement si conditions remplies
-const emailChecker = (value) => {
+const emailChecker = (value, id) => {
   if (!value.match(regexEmail)) {
-    errorDisplay("email", "Le mail n'est pas valide");
-    email = null;
+    errorDisplay(id, "Le mail n'est pas valide", false);
+    isEmailEmpty = true;
   } else {
-    errorDisplay("email", "", true);
-    email = value;
+    errorDisplay(id, "", true);
+    isEmailEmpty = false;
   }
 };
 
 const birthChecker = (value, id) => {
-    console.log(value)
-if (value === "") {
-        
-} else {
-    errorDisplay(id, "", true)
-    isBirthEmpty = false
-}
-};
-/* // verifie les conditions de quantité et retourne la variable seulement si conditions remplies
-const quantityChecker = (value) => {
-  if (!value.match(regexQuantity)) {
-    errorDisplay("quantity", "Le mail n'est pas valide");
-    email = null;
+  if (value !== "") {
+    errorDisplay(id, "", true);
+    isBirthEmpty = false;
   } else {
-    errorDisplay("quantity", "", true);
-    email = value;  
+    errorDisplay(id, "Merci de choisir une date de naissance", false);
+    isBirthEmpty = true;
   }
-}; */
+};
+
+const quantityChecker = (value, id) => {
+  if (!value.match(regexQuantity)) {
+    errorDisplay("quantity", "Merci de choisir un chiffre ou un nombre", false);
+    isQuantitySelected = false;
+  } else {
+    errorDisplay(id, "", true);
+    isQuantitySelected = true;
+  }
+};
+
+// checkCgu verifie si l'input sur laquelle nous la jouons est coché ou non
+const checkCgu = (isChecked, id) => {
+  if (isChecked) {
+    errorDisplay(id, "", true);
+  } else {
+    errorDisplay(id, "Merci d'accepter les CGU", false);
+    isQuantitySelected = false;
+  }
+};
 
 // fn gérant l'affichage des erreurs sur le DOM pour chaque fn de vérification
 /*  tag = class ou id ou selecteur 
-    message = message à afficher si erreur vraie
-    valid = boolean true = no error  false = error */
+    message = message à afficher selon erreur ou non
+    valid = boolean  // true = no error  false = error */
 const errorDisplay = (tag, message, valid) => {
-  
   const container = document.getElementById(tag);
-  const error = document.querySelector("#" + tag + " + p");
-
+  const error = document.querySelector("#" + tag + "--error");
   if (!valid) {
     container.classList.add("error");
     error.textContent = message;
@@ -95,71 +109,95 @@ const errorDisplay = (tag, message, valid) => {
   }
 };
 
-/* <-------------------------------------------------------------------------------------------------------------------------------------------> */
+/* <---------------------------------------------------------------------------------------> */
 
-/* <---------------------------------------------------------------EventListeners----------------------------------------------------------------> */
+/* <---------------------------------EventListeners---------------------------------------> */
 
-// lance chaque fonction de verification selon l'input que nous utilisons, nous utilisons la value rentrée en argument
+// verifie chaque champs à chaque inputs effectués grace aux fn déclarées plus tot
+// les checkboxes radio ne sont pas vérifiées ici, elles sont vérifiées dans le forEach dessous
 inputs.forEach((input) => {
-  input.addEventListener("input", (e) => {  
-    console.log(e)
+  input.addEventListener("input", (e) => {
     switch (e.target.id) {
       case "first":
         nameChecker(e.target.value, e.target.id);
-        break;     
-      case "last":        
-        nameChecker(e.target.value, e.target.id);      
-        break;     
+        break;
+      case "last":
+        nameChecker(e.target.value, e.target.id);
+        break;
       case "email":
-        emailChecker(e.target.value);   
-        break;  
-      case "radioContainer":
-        console.log(e);  
-        break;  
-      case "checkbox1":
-        console.log(e);    
-        break;  
+        emailChecker(e.target.value, e.target.id);
+        break;
       case "birthdate":
-        birthChecker(e.target.value, e.target.id)  
-        break;  
-        /* case "quantity":
-        quantityChecker(e.target.value);
-        console.log("test1")       
-        break;   */       
+        birthChecker(e.target.value, e.target.id);
+        break;
+      case "checkbox1":
+        checkCgu(e.target.value, e.target.id);
+        break;
+      case "quantity":
+        quantityChecker(e.target.value, e.target.id);
+        console.log(e.target.value);
+        break;
+
       default:
         null;
     }
   });
-  
 });
-
+// si aucune villes n'est cochées alors passe isOneCityChecked sur true
+// pas de else car impossible de décocher
 checkBoxes.forEach((checkBox) => {
-  checkBox.addEventListener("input", () => {  
+  checkBox.addEventListener("input", () => {
     if (isOneCityChecked === false) {
-        isOneCityChecked = true
-          
+      isOneCityChecked = true;
+      errorDisplay("radioContainer", "", true);
     }
-  });  
+  });
 });
- usersTerms.addEventListener("click" , () => {
-   isUsersTermsAgreed = !isUsersTermsAgreed  
- })
 
-// envoie les données au serveur back au click sur commander
-form.addEventListener("submit", (e) => { 
-   
-    console.log(isBirthEmpty)
+//toggle les CGU sur true ou false
+usersTerms.addEventListener("click", () => {
+  isUsersTermsAgreed = !isUsersTermsAgreed;
+});
 
-    if (isBirthEmpty) {       
-        errorDisplay("birthdate", "Merci de choisir une date de naissance")
-        e.preventDefault();
-    }  
-    if (!isUsersTermsAgreed) {
-        alert("Veuillez accepter les conditions générales d'utilisations !")      
-        e.preventDefault();  
-    }
-    if (!isOneCityChecked) {
-        e.preventDefault();  
-        alert("Veuillez choisir un tournoi auquel participer !")      
-    }      
- });
+// verifie les inputs au moment de la submission
+form.addEventListener("submit", (e) => {
+  if (isFirstEmpty) {
+    errorDisplay("first", "Merci de renseigner votre prénom", false);
+    e.preventDefault();
+  }
+  if (isLastEmpty) {
+    errorDisplay("last", "Merci de renseigner votre nom", false);
+    e.preventDefault();
+  }
+  if (isEmailEmpty) {
+    errorDisplay("email", "Merci de renseigner votre email", false);
+    e.preventDefault();
+  }
+  if (isBirthEmpty) {
+    errorDisplay("birthdate", "Merci de choisir une date de naissance", false);
+    e.preventDefault();
+  }
+  if (!isQuantitySelected) {
+    errorDisplay("quantity", "Merci de choisir un nombre", false);
+    e.preventDefault();
+  }
+  if (!isOneCityChecked) {
+    e.preventDefault();
+    errorDisplay("radioContainer", "Merci de choisir une ville", false);
+  }
+  if (!isUsersTermsAgreed) {
+    errorDisplay("checkbox1", "Merci d'accepter les CGU", false);
+    e.preventDefault();
+  }
+  if (
+    !isFirstEmpty &&
+    !isLastEmpty &&
+    !isEmailEmpty &&
+    !isBirthEmpty &&
+    isQuantitySelected &&
+    isOneCityChecked &&
+    isUsersTermsAgreed
+  ) {
+    alert("Merci ! Votre réservation a été reçue.");
+  }
+});
