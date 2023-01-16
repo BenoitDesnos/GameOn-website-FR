@@ -135,7 +135,7 @@ inputs.forEach((input) => {
         break;
       case "quantity":
         quantityChecker(e.target.value, e.target.id);
-        console.log(e.target.value);
+
         break;
 
       default:
