@@ -14,7 +14,6 @@ body {
   margin: 0;
   display: flex;
   flex-direction: column;
-
   font-family: var(--font-default);
   font-size: 18px;
   max-width: 1300px;
@@ -37,10 +36,7 @@ img {
   justify-content: space-between;
   align-items: center;
 }
-.header-logo {
-}
-.main-navbar {
-}
+
 .topnav a {
   float: left;
   display: block;
@@ -234,6 +230,20 @@ main {
 .modal-body {
   padding: 15px 8%;
   margin: 15px auto;
+  min-height: 657px;
+  position: relative;
+}
+
+.thanks-message {
+  display: inline-block;
+  font-size: 36px;
+  text-align: center;
+  font-weight: 40;
+  position: absolute;
+  width: 271px;
+  left: 50%;
+  top: 40%;
+  transform: translate(-50%, -50%);
 }
 
 label {
@@ -362,6 +372,7 @@ input[data-error]::after {
 }
 .close {
   position: absolute;
+  z-index: 5;
   right: 15px;
   top: 15px;
   width: 32px;
@@ -386,7 +397,8 @@ input[data-error]::after {
   transform: rotate(-45deg);
 }
 .btn-submit,
-.btn-signup {
+.btn-signup,
+.btn-close {
   background: #fe142f;
   display: block;
   margin: 0 auto;
@@ -396,6 +408,12 @@ input[data-error]::after {
   color: #fff;
   cursor: pointer;
   border: 0;
+}
+.btn-close {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 /* custom select styles */
 .custom-select {

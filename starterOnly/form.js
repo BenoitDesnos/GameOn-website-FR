@@ -1,6 +1,8 @@
 /* <---------------------------------------------- const et variables --------------------------------------------------------------------> */
 
 const form = document.querySelector("form");
+const modalBody = document.querySelector(".modal-body");
+const formChildrens = document.querySelectorAll("form > *");
 const inputs = document.querySelectorAll("input");
 const checkBoxes = document.querySelectorAll('input[type="radio"]');
 const usersTerms = document.getElementById("checkbox1");
@@ -109,6 +111,34 @@ const errorDisplay = (tag, message, valid) => {
   }
 };
 
+// les fn ci-dessous gerent l'affichage du message de remerciements après avoir envoyé le form
+
+const displayThanksMessage = () => {
+  console.log(modalClose);
+  formChildrens.forEach((children) => {
+    children.style.display = "none";
+  });
+  let thanksMessage = document.createElement("span");
+  let closeButton = document.createElement("button");
+
+  thanksMessage.textContent = "Merci pour votre inscription";
+  thanksMessage.classList.add("thanks-message");
+  closeButton.textContent = "Fermer";
+  closeButton.classList.add("btn-close");
+  closeButton.classList.add("close-on-click");
+
+  modalBody.appendChild(thanksMessage);
+  modalBody.appendChild(closeButton);
+};
+
+const closeThanksMessageOnClick = () => {
+  Array.from(modalClose).forEach((btn) =>
+    btn.addEventListener("click", () => {
+      window.location.reload();
+    })
+  );
+};
+
 /* <---------------------------------------------------------------------------------------> */
 
 /* <---------------------------------EventListeners---------------------------------------> */
@@ -147,7 +177,7 @@ inputs.forEach((input) => {
 // pas de else car impossible de décocher
 checkBoxes.forEach((checkBox) => {
   checkBox.addEventListener("input", () => {
-    if (isOneCityChecked === false) {
+    if (!isOneCityChecked) {
       isOneCityChecked = true;
       errorDisplay("radioContainer", "", true);
     }
@@ -198,6 +228,8 @@ form.addEventListener("submit", (e) => {
     isOneCityChecked &&
     isUsersTermsAgreed
   ) {
-    alert("Merci ! Votre réservation a été reçue.");
+    e.preventDefault();
+    displayThanksMessage();
+    closeThanksMessageOnClick();
   }
 });
