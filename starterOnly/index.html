@@ -58,29 +58,30 @@
           <form name="reserve" action="index.html" method="get" >
             <div class="formData">
               <label for="first">Prénom</label><br>
-              <input class="text-control"  type="text" id="first" name="first" minlength="2" />
-              <p id="first--error"></p>  
+              <input class="text-control" data-errorregex="Le prénom ne doit pas contenir de caractères spéciaux" data-errorempty="Merci de remplir ce champ" data-errorLength="Ce champ doit comprendre entre 2 et 60 caractères" type="text" id="first" name="first" minlength="2" />
+              <!-- <input class="text-control"  type="text" id="first" name="first" minlength="2" /> -->
+              <p id="first--error" class="error"></p>  
 
             </div>
             <div class="formData">
               <label for="last">Nom</label><br>
-              <input class="text-control"  type="text" id="last" name="last" />
-              <p id="last--error"></p>  
+              <input class="text-control"  type="text" data-errorregex="Le nom ne doit pas contenir de caractères spéciaux" data-errorempty="Merci de remplir ce champ" data-errorLength="Ce champ doit comprendre entre 2 et 60 caractères" id="last" name="last" />
+              <p id="last--error" class="error"></p>  
             </div>
             <div class="formData">
               <label for="email">E-mail</label><br>
-              <input class="text-control"  type="email" id="email" name="email" />
-              <p id="email--error"></p>  
+              <input class="text-control"  type="email"  data-errorregex="Le mail n'est pas valide" data-errorempty="Merci de remplir ce champ"  data-errorLength="Le mail n'est pas valide"id="email" name="email" />
+              <p id="email--error" class="error"></p>  
             </div>
             <div class="formData">
               <label for="birthdate">Date de naissance</label><br>
-              <input class="text-control"  type="date" id="birthdate" name="birthdate" />
-              <p id="birthdate--error"></p>  
+              <input class="text-control"  type="date" data-errorempty="Merci de remplir ce champ" id="birthdate" name="birthdate" />
+              <p id="birthdate--error" class="error"></p>  
             </div>
             <div class="formData">
               <label for="quantity">À combien de tournois GameOn avez-vous déjà participé ?</label><br>
-              <input type="number" class="text-control" id="quantity" name="quantity" min="0" max="99">
-              <p id="quantity--error"></p>  
+              <input type="number" class="text-control" data-errorregex="Merci de choisir un chiffre ou un nombre" data-errorempty="Merci de remplir ce champ"id="quantity" name="quantity" min="0" max="99">
+              <p id="quantity--error" class="error"></p>  
             </div>
             <legend class="text-label">A quel tournoi souhaitez-vous participer cette année ?</legend>
             <div class="formData" id="radioContainer">
@@ -109,15 +110,15 @@
                 <span class="checkbox-icon"></span>
                 Portland</label>
             </div>
-            <p id="radioContainer--error"></p>
+            <p id="radioContainer--error" class="error"></p>
 
             <div class="formData">
-              <input class="checkbox-input" type="checkbox" id="checkbox1" checked  />
+              <input class="checkbox-input" type="checkbox" id="checkbox1" data-errornotchecked="Merci d'accepter les CGU"  checked  />
               <label class="checkbox2-label" for="checkbox1">
                 <span class="checkbox-icon"></span>
                 J'ai lu et accepté les conditions d'utilisation.
               </label>
-              <p id="checkbox1--error"></p>             
+              <p id="checkbox1--error" class="error"></p>             
               <input class="checkbox-input" type="checkbox" id="checkbox2" />
               <label class="checkbox2-label" for="checkbox2">
                 <span class="checkbox-icon"></span>
@@ -136,8 +137,8 @@
       Copyright 2014 - 2022, GameOn Inc.
     </p>
   </footer>
-  <script src="modal.js"></script>
-  <script src="form.js"></script>
+  <script src="js/modal.js"></script>
+  <script src="js/form.js"></script>
 </body>
 
 </html>
