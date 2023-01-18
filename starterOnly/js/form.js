@@ -3,46 +3,36 @@
 const form = document.querySelector("form");
 const modalBody = document.querySelector(".modal-body");
 const formChildrens = document.querySelectorAll("form > *");
-const inputs = document.querySelectorAll(
-  ".text-control" /* ~ S.checkbox-input" */
-);
+const inputs = document.querySelectorAll(".text-control");
 const errors = document.querySelectorAll(".error");
-const checkBoxes = document.querySelectorAll('input[type="radio"]');
+const radios = document.querySelectorAll('input[type="radio"]');
 const usersTerms = document.getElementById("checkbox1");
 const quantity = document.getElementById("quantity");
 
-let isOneCityChecked = false;
-let isUsersTermsAgreed = usersTerms.checked;
+const radiosAndCheckBoxesToCheck = [usersTerms, ...radios];
+const inputsToCheck = [...inputs, ...radiosAndCheckBoxesToCheck];
 
 let regexText = /^([a-zA-Z-]+\s)*[a-zA-Z-]+$/g;
 let regexQuantity = /^[0-9]+$/g;
 let regexEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
 
+let isOneCityChecked = false;
+
 /* <-------------------------------------------------------------------------------------------------------------------------------------------> */
 
 /* <---------------------------------------------- Fonctions de verifications des inputs --------------------------------------------------------------------> */
 
-/* Les fn ci-dessous verifient les values rentrées et retournent s'il y a une erreur ou non grâce à la fn errorDisplay*/
-
-const valueChecker = (input, regex, checked) => {
+//valuechhecker verifie la conformité des valeurs dans les inputs de type text, email et number
+const valueChecker = (input, regex) => {
   let value = input.value;
   let id = input.id;
-  /*  if (!checked) {
-    errorDisplay(
-      id,
-      document.querySelector(`#${id}`).dataset.errornotchecked,
-      false
-    );
-  } else { */
   if (value.length === 0) {
     errorDisplay(
       id,
       document.querySelector(`#${id}`).dataset.errorempty,
       false
     );
-    console.log("test1");
   } else if (regex && !value.match(regex)) {
-    console.log("test2");
     errorDisplay(
       id,
       document.querySelector(`#${id}`).dataset.errorregex,
@@ -54,12 +44,31 @@ const valueChecker = (input, regex, checked) => {
       document.querySelector(`#${id}`).dataset.errorlength,
       false
     );
-    console.log("test3");
   } else {
     errorDisplay(id, "", true);
   }
   /*  } */
 };
+
+//checkIfChecked verifie si les inputs de type boolean sont checked
+function checkIfChecked(checked, id) {
+  if (checked && id === "radioContainer") {
+    isOneCityChecked = true;
+  } else if (id !== "radioContainer") {
+    isOneCityChecked = false;
+  }
+  if (checked) {
+    errorDisplay(id, "", true);
+  } else if (!checked && !isOneCityChecked) {
+    errorDisplay(
+      id,
+      document.querySelector(`#${id}`).dataset.errornotchecked,
+      false
+    );
+  }
+}
+
+/* <-------------------------------------------------------------------------------------------------------------------------------------------> */
 
 // fn gérant l'affichage des erreurs sur le DOM pour chaque fn de vérification
 /*  tag = class ou id ou selecteur 
@@ -80,7 +89,6 @@ const errorDisplay = (tag, message, valid) => {
 // les fn ci-dessous gerent l'affichage du message de remerciements après avoir envoyé le form
 
 const displayThanksMessage = () => {
-  console.log(modalClose);
   formChildrens.forEach((children) => {
     children.style.display = "none";
   });
@@ -105,14 +113,10 @@ const closeThanksMessageOnClick = () => {
   );
 };
 
-/* <---------------------------------------------------------------------------------------> */
-
-/* <---------------------------------EventListeners---------------------------------------> */
-
-// verifie chaque champs à chaque inputs effectués grace aux fn déclarées plus tot
-// les checkboxes radio ne sont pas vérifiées ici, elles sont vérifiées dans le forEach dessous
-function listenToAction(input) {
-  switch (input.attributes.type.value) {
+//Cette fonction lance les fonctions de vérifications sur le ou les champs concernés
+//elle est appelée dans l'eventlistner d'input et de submit
+function watchInputOnAction(input) {
+  switch (input.type) {
     case "text":
       valueChecker(input, regexText);
       break;
@@ -122,68 +126,46 @@ function listenToAction(input) {
     case "number":
       valueChecker(input, regexQuantity);
       break;
-    /*  case "checkbox":
-      valueChecker(input, null, isUsersTermsAgreed);
+    case "checkbox":
+      checkIfChecked(input.checked, input.id);
       break;
     case "radio":
-      valueChecker(input, null, isOneCityChecked);
-      break; */
-
+      checkIfChecked(input.checked, "radioContainer");
+      break;
     default:
       valueChecker(input, null);
-
       null;
   }
 }
 
-inputs.forEach((input) => {
+/* -----------------------EventListener -------------------------- */
+
+/* INPUTS ET APPLIQUE LES ERREURS SI EXISTANTES VIA WATCHINPUTONACTION */
+inputsToCheck.forEach((input) => {
   input.addEventListener("input", (e) => {
-    listenToAction(input);
+    watchInputOnAction(input);
   });
 });
 
-// si aucune villes n'est cochées alors passe isOneCityChecked sur true
-// pas de else car impossible de décocher
-
-checkBoxes.forEach((checkBox) => {
-  checkBox.addEventListener("input", () => {
-    if (!isOneCityChecked) {
-      isOneCityChecked = true;
-      errorDisplay("radioContainer", "", true);
-    }
-  });
-});
-
-//toggle les CGU sur true ou false
-usersTerms.addEventListener("click", () => {
-  isUsersTermsAgreed = !isUsersTermsAgreed;
-  if (isUsersTermsAgreed) {
-    errorDisplay("checkbox1", "", true);
-  }
-});
-
-// verifie les inputs au moment de la submission
+/* SUBMIT ET APPLIQUE LES ERREURS SI EXISTANTES VIA WATCHINPUTONACTION */
 form.addEventListener("submit", (e) => {
   e.preventDefault();
   let isErrorPresent = false;
-  if (!isOneCityChecked) {
-    errorDisplay("radioContainer", "prout", false);
-  }
-  if (!isUsersTermsAgreed) {
-    errorDisplay("checkbox1", "prout2", false);
-  }
-  inputs.forEach((input) => {
-    listenToAction(input);
+  // verifie la conformité de tous les inputs à vérifier
+  inputsToCheck.forEach((input) => {
+    watchInputOnAction(input);
   });
+
+  // verifie si au moins une erreur est présente
   errors.forEach((error) => {
-    console.log(error.textContent);
     if (error.textContent.length > 0) {
       isErrorPresent = true;
     }
   });
-  console.log(isErrorPresent);
   if (!isErrorPresent) {
     displayThanksMessage();
     closeThanksMessageOnClick();
   }
 });
+
+/* ---------------------------------------------------------------- */

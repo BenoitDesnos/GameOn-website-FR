@@ -58,33 +58,33 @@
           <form name="reserve" action="index.html" method="get" >
             <div class="formData">
               <label for="first">Prénom</label><br>
-              <input class="text-control" data-errorregex="Le prénom ne doit pas contenir de caractères spéciaux" data-errorempty="Merci de remplir ce champ" data-errorLength="Ce champ doit comprendre entre 2 et 60 caractères" type="text" id="first" name="first" minlength="2" />
+              <input class="text-control" data-errorregex="Le prénom ne doit pas contenir de caractères spéciaux" data-errorempty="Merci de choisir un prénom" data-errorLength="Ce champ doit comprendre entre 2 et 60 caractères" type="text" id="first" name="first" minlength="2" />
               <!-- <input class="text-control"  type="text" id="first" name="first" minlength="2" /> -->
               <p id="first--error" class="error"></p>  
 
             </div>
             <div class="formData">
               <label for="last">Nom</label><br>
-              <input class="text-control"  type="text" data-errorregex="Le nom ne doit pas contenir de caractères spéciaux" data-errorempty="Merci de remplir ce champ" data-errorLength="Ce champ doit comprendre entre 2 et 60 caractères" id="last" name="last" />
+              <input class="text-control"  type="text" data-errorregex="Le nom ne doit pas contenir de caractères spéciaux" data-errorempty="Merci de choisir un nom" data-errorLength="Ce champ doit comprendre entre 2 et 60 caractères" id="last" name="last" />
               <p id="last--error" class="error"></p>  
             </div>
             <div class="formData">
               <label for="email">E-mail</label><br>
-              <input class="text-control"  type="email"  data-errorregex="Le mail n'est pas valide" data-errorempty="Merci de remplir ce champ"  data-errorLength="Le mail n'est pas valide"id="email" name="email" />
+              <input class="text-control"  type="email"  data-errorregex="Le mail n'est pas valide" data-errorempty="Merci de choisir une adresse email"  data-errorLength="Le mail n'est pas valide"id="email" name="email" />
               <p id="email--error" class="error"></p>  
             </div>
             <div class="formData">
               <label for="birthdate">Date de naissance</label><br>
-              <input class="text-control"  type="date" data-errorempty="Merci de remplir ce champ" id="birthdate" name="birthdate" />
+              <input class="text-control"  type="date" data-errorempty="Merci de choisir une date de naissance" id="birthdate" name="birthdate" />
               <p id="birthdate--error" class="error"></p>  
             </div>
             <div class="formData">
               <label for="quantity">À combien de tournois GameOn avez-vous déjà participé ?</label><br>
-              <input type="number" class="text-control" data-errorregex="Merci de choisir un chiffre ou un nombre" data-errorempty="Merci de remplir ce champ"id="quantity" name="quantity" min="0" max="99">
+              <input type="number" class="text-control" data-errorregex="Merci de choisir un chiffre ou un nombre" data-errorempty="Merci de choisir un chiffre ou un nombre"id="quantity" name="quantity" min="0" max="99">
               <p id="quantity--error" class="error"></p>  
             </div>
             <legend class="text-label">A quel tournoi souhaitez-vous participer cette année ?</legend>
-            <div class="formData" id="radioContainer">
+            <div class="formData" id="radioContainer" data-errornotchecked="Merci de choisir une ville">
               <input class="checkbox-input" type="radio" id="location1" name="location" value="New York" />
               <label class="checkbox-label" for="location1">
                 <span class="checkbox-icon"></span>
@@ -113,7 +113,7 @@
             <p id="radioContainer--error" class="error"></p>
 
             <div class="formData">
-              <input class="checkbox-input" type="checkbox" id="checkbox1" data-errornotchecked="Merci d'accepter les CGU"  checked  />
+              <input class="checkbox-input" type="checkbox" id="checkbox1" data-errornotchecked="Merci d'accepter les CGU"    />
               <label class="checkbox2-label" for="checkbox1">
                 <span class="checkbox-icon"></span>
                 J'ai lu et accepté les conditions d'utilisation.
