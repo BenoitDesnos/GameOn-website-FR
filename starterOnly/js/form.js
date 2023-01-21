@@ -15,6 +15,8 @@ const inputsToCheck = [...inputs, ...radiosAndCheckBoxesToCheck];
 let regexText = /^([a-zA-Z-]+\s)*[a-zA-Z-]+$/g;
 let regexQuantity = /^[0-9]+$/g;
 let regexEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
+let regexBirthDate =
+  /^(?:19|20)\d\d([\/.-])(?:0[1-9]|1[012])\1(?:0[1-9]|[12]\d|3[01])$/gm;
 
 let isOneCityChecked = false;
 
@@ -47,7 +49,6 @@ const valueChecker = (input, regex) => {
   } else {
     errorDisplay(id, "", true);
   }
-  /*  } */
 };
 
 //checkIfChecked verifie si les inputs de type boolean sont checked
@@ -126,6 +127,9 @@ function watchInputOnAction(input) {
     case "number":
       valueChecker(input, regexQuantity);
       break;
+    case "date":
+      valueChecker(input, regexBirthDate);
+      break;
     case "checkbox":
       checkIfChecked(input.checked, input.id);
       break;
@@ -143,6 +147,8 @@ function watchInputOnAction(input) {
 /* INPUTS ET APPLIQUE LES ERREURS SI EXISTANTES VIA WATCHINPUTONACTION */
 inputsToCheck.forEach((input) => {
   input.addEventListener("input", (e) => {
+    console.log(e);
+    console.log(input.classList);
     watchInputOnAction(input);
   });
 });
