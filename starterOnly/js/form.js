@@ -11,6 +11,7 @@ const quantity = document.getElementById("quantity");
 
 const radiosAndCheckBoxesToCheck = [usersTerms, ...radios];
 const inputsToCheck = [...inputs, ...radiosAndCheckBoxesToCheck];
+/* const amountOfInputsToValidate = [...inputs, [...radiosAndCheckBoxesToCheck]]; */
 
 let regexText = /^([a-zA-Z-]+\s)*[a-zA-Z-]+$/g;
 let regexQuantity = /^[0-9]+$/g;
@@ -19,6 +20,8 @@ let regexBirthDate =
   /^(?:19|20)\d\d([\/.-])(?:0[1-9]|1[012])\1(?:0[1-9]|[12]\d|3[01])$/gm;
 
 let isOneCityChecked = false;
+let isSubmit = false;
+let inputsValid = 0;
 
 /* <-------------------------------------------------------------------------------------------------------------------------------------------> */
 
@@ -78,12 +81,21 @@ function checkIfChecked(checked, id) {
 const errorDisplay = (tag, message, valid) => {
   const container = document.getElementById(tag);
   const error = document.querySelector("#" + tag + "--error");
+  console.log(isSubmit);
   if (!valid) {
     container.classList.add("error");
     error.textContent = message;
+    if (isSubmit && !valid) {
+      inputsValid--;
+      console.log(inputsValid + " test1");
+    }
   } else {
     container.classList.remove("error");
     error.textContent = message;
+    if (isSubmit && valid) {
+      inputsValid++;
+      console.log(inputsValid + " test2");
+    }
   }
 };
 
@@ -147,8 +159,6 @@ function watchInputOnAction(input) {
 /* INPUTS ET APPLIQUE LES ERREURS SI EXISTANTES VIA WATCHINPUTONACTION */
 inputsToCheck.forEach((input) => {
   input.addEventListener("input", (e) => {
-    console.log(e);
-    console.log(input.classList);
     watchInputOnAction(input);
   });
 });
@@ -156,19 +166,16 @@ inputsToCheck.forEach((input) => {
 /* SUBMIT ET APPLIQUE LES ERREURS SI EXISTANTES VIA WATCHINPUTONACTION */
 form.addEventListener("submit", (e) => {
   e.preventDefault();
-  let isErrorPresent = false;
+  inputsValid = 0;
+  isSubmit = true;
   // verifie la conformité de tous les inputs à vérifier
   inputsToCheck.forEach((input) => {
     watchInputOnAction(input);
   });
-
+  isSubmit = false;
+  console.log(inputsValid, inputs.length);
   // verifie si au moins une erreur est présente
-  errors.forEach((error) => {
-    if (error.textContent.length > 0) {
-      isErrorPresent = true;
-    }
-  });
-  if (!isErrorPresent) {
+  if (inputsValid === 7) {
     displayThanksMessage();
     closeThanksMessageOnClick();
   }
