@@ -19,9 +19,11 @@ let regexEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
 let regexBirthDate =
   /^(?:19|20)\d\d([\/.-])(?:0[1-9]|1[012])\1(?:0[1-9]|[12]\d|3[01])$/gm;
 
-let isOneCityChecked = false;
+let isOneRadioChecked = false;
+/* let isOneRadioChecked = false; */
 let isSubmit = false;
-let inputsValid = 0;
+let amountOfPotentialErrors = inputsToCheck.length - (radios.length - 1);
+let amountOfErrors;
 
 /* <-------------------------------------------------------------------------------------------------------------------------------------------> */
 
@@ -57,13 +59,13 @@ const valueChecker = (input, regex) => {
 //checkIfChecked verifie si les inputs de type boolean sont checked
 function checkIfChecked(checked, id) {
   if (checked && id === "radioContainer") {
-    isOneCityChecked = true;
+    isOneRadioChecked = true;
   } else if (id !== "radioContainer") {
-    isOneCityChecked = false;
+    isOneRadioChecked = false;
   }
   if (checked) {
     errorDisplay(id, "", true);
-  } else if (!checked && !isOneCityChecked) {
+  } else if (!checked && !isOneRadioChecked) {
     errorDisplay(
       id,
       document.querySelector(`#${id}`).dataset.errornotchecked,
@@ -81,21 +83,16 @@ function checkIfChecked(checked, id) {
 const errorDisplay = (tag, message, valid) => {
   const container = document.getElementById(tag);
   const error = document.querySelector("#" + tag + "--error");
-  console.log(isSubmit);
+
   if (!valid) {
     container.classList.add("error");
     error.textContent = message;
-    if (isSubmit && !valid) {
-      inputsValid--;
-      console.log(inputsValid + " test1");
-    }
   } else {
+    if (isSubmit && valid) {
+      amountOfErrors--;
+    }
     container.classList.remove("error");
     error.textContent = message;
-    if (isSubmit && valid) {
-      inputsValid++;
-      console.log(inputsValid + " test2");
-    }
   }
 };
 
@@ -166,16 +163,17 @@ inputsToCheck.forEach((input) => {
 /* SUBMIT ET APPLIQUE LES ERREURS SI EXISTANTES VIA WATCHINPUTONACTION */
 form.addEventListener("submit", (e) => {
   e.preventDefault();
-  inputsValid = 0;
+  // à chaque submit on reset le nombre d'erreurs
+  amountOfErrors = amountOfPotentialErrors;
+  // on set sur true pour indiquer à la fn errorDisplay qu'elle est joué dans le cadre du submit
   isSubmit = true;
-  // verifie la conformité de tous les inputs à vérifier
+  // verifie la conformité de tous les inputs à vérifier et décrémente amountoferrors
   inputsToCheck.forEach((input) => {
     watchInputOnAction(input);
   });
   isSubmit = false;
-  console.log(inputsValid, inputs.length);
   // verifie si au moins une erreur est présente
-  if (inputsValid === 7) {
+  if (amountOfErrors === 0) {
     displayThanksMessage();
     closeThanksMessageOnClick();
   }
