@@ -1,29 +1,25 @@
 /* <---------------------------------------------- const et variables --------------------------------------------------------------------> */
-
+// const
 const form = document.querySelector("form");
 const modalBody = document.querySelector(".modal-body");
+const usersTerms = document.getElementById("checkbox1");
+const quantity = document.getElementById("quantity");
+// arrays && nodelist
 const formChildrens = document.querySelectorAll("form > *");
 const inputs = document.querySelectorAll(".text-control");
 const errors = document.querySelectorAll(".error");
 const radios = document.querySelectorAll('input[type="radio"]');
-const usersTerms = document.getElementById("checkbox1");
-const quantity = document.getElementById("quantity");
-
 const radiosAndCheckBoxesToCheck = [usersTerms, ...radios];
 const inputsToCheck = [...inputs, ...radiosAndCheckBoxesToCheck];
-/* const amountOfInputsToValidate = [...inputs, [...radiosAndCheckBoxesToCheck]]; */
-
-let regexText = /^([a-zA-Z-]+\s)*[a-zA-Z-]+$/g;
-let regexQuantity = /^[0-9]+$/g;
-let regexEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
-let regexBirthDate =
+// regexes
+const regexText = /^([a-zA-Z-]+\s)*[a-zA-Z-]+$/g;
+const regexQuantity = /^[0-9]+$/g;
+const regexEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
+const regexBirthDate =
   /^(?:19|20)\d\d([\/.-])(?:0[1-9]|1[012])\1(?:0[1-9]|[12]\d|3[01])$/gm;
-
+//variables
 let isOneRadioChecked = false;
-/* let isOneRadioChecked = false; */
 let isSubmit = false;
-let amountOfPotentialErrors = inputsToCheck.length - (radios.length - 1);
-let amountOfErrors;
 
 /* <-------------------------------------------------------------------------------------------------------------------------------------------> */
 
@@ -31,34 +27,25 @@ let amountOfErrors;
 
 //valuechhecker verifie la conformité des valeurs dans les inputs de type text, email et number
 const valueChecker = (input, regex) => {
+  // variables
   let value = input.value;
   let id = input.id;
+  let idDataset = document.getElementById(id).dataset;
+  //conditions
   if (value.length === 0) {
-    errorDisplay(
-      id,
-      document.querySelector(`#${id}`).dataset.errorempty,
-      false
-    );
-  } else if (regex && !value.match(regex)) {
-    errorDisplay(
-      id,
-      document.querySelector(`#${id}`).dataset.errorregex,
-      false
-    );
+    errorDisplay(id, idDataset.errorempty, false);
   } else if ((value.length < 2 || value.length > 60) && isNaN(value)) {
-    errorDisplay(
-      id,
-      document.querySelector(`#${id}`).dataset.errorlength,
-      false
-    );
+    errorDisplay(id, idDataset.errorlength, false);
+  } else if (regex && !value.match(regex)) {
+    errorDisplay(id, idDataset.errorregex, false);
   } else {
     errorDisplay(id, "", true);
   }
 };
 
-//checkIfChecked verifie si les inputs de type boolean sont checked
-function checkIfChecked(checked, id) {
-  if (checked && id === "radioContainer") {
+//booleanChecker verifie si les inputs de type boolean sont checked
+function booleanChecker(checked, id) {
+  if (id === "radioContainer" && checked) {
     isOneRadioChecked = true;
   } else if (id !== "radioContainer") {
     isOneRadioChecked = false;
@@ -68,7 +55,7 @@ function checkIfChecked(checked, id) {
   } else if (!checked && !isOneRadioChecked) {
     errorDisplay(
       id,
-      document.querySelector(`#${id}`).dataset.errornotchecked,
+      document.getElementById(id).dataset.errornotchecked,
       false
     );
   }
@@ -81,9 +68,10 @@ function checkIfChecked(checked, id) {
     message = message à afficher selon erreur ou non
     valid = boolean  // true = no error  false = error */
 const errorDisplay = (tag, message, valid) => {
+  //constantes
   const container = document.getElementById(tag);
   const error = document.querySelector("#" + tag + "--error");
-
+  //condtions
   if (!valid) {
     container.classList.add("error");
     error.textContent = message;
@@ -102,16 +90,16 @@ const displayThanksMessage = () => {
   formChildrens.forEach((children) => {
     children.style.display = "none";
   });
+  /* créé les élements et les appointes sur le dom */
   let thanksMessage = document.createElement("span");
-  let closeButton = document.createElement("button");
-
   thanksMessage.textContent = "Merci pour votre inscription";
   thanksMessage.classList.add("thanks-message");
+  modalBody.appendChild(thanksMessage);
+
+  let closeButton = document.createElement("button");
   closeButton.textContent = "Fermer";
   closeButton.classList.add("btn-close");
   closeButton.classList.add("close-on-click");
-
-  modalBody.appendChild(thanksMessage);
   modalBody.appendChild(closeButton);
 };
 
@@ -140,10 +128,10 @@ function watchInputOnAction(input) {
       valueChecker(input, regexBirthDate);
       break;
     case "checkbox":
-      checkIfChecked(input.checked, input.id);
+      booleanChecker(input.checked, input.id);
       break;
     case "radio":
-      checkIfChecked(input.checked, "radioContainer");
+      booleanChecker(input.checked, "radioContainer");
       break;
     default:
       valueChecker(input, null);
@@ -164,16 +152,16 @@ inputsToCheck.forEach((input) => {
 form.addEventListener("submit", (e) => {
   e.preventDefault();
   // à chaque submit on reset le nombre d'erreurs
-  amountOfErrors = amountOfPotentialErrors;
-  // on set sur true pour indiquer à la fn errorDisplay qu'elle est joué dans le cadre du submit
+  let potentialErrors = inputsToCheck.length - (radios.length - 1);
+  // on set sur true pour indiquer à la fn errorDisplay qu'elle est joué dans le cadre d'un submit
   isSubmit = true;
-  // verifie la conformité de tous les inputs à vérifier et décrémente amountoferrors
+  // verifie la conformité de tous les inputs à vérifier et décrémente amountoferrors pour chaque input valide
   inputsToCheck.forEach((input) => {
     watchInputOnAction(input);
   });
   isSubmit = false;
   // verifie si au moins une erreur est présente
-  if (amountOfErrors === 0) {
+  if (potentialErrors === 0) {
     displayThanksMessage();
     closeThanksMessageOnClick();
   }
