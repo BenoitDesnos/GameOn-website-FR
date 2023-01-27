@@ -19,6 +19,7 @@ const regexBirthDate =
   /^(?:19|20)\d\d([\/.-])(?:0[1-9]|1[012])\1(?:0[1-9]|[12]\d|3[01])$/gm;
 //variables
 let isOneRadioChecked = false;
+let potentialErrors;
 let isSubmit = false;
 
 /* <-------------------------------------------------------------------------------------------------------------------------------------------> */
@@ -77,7 +78,7 @@ const errorDisplay = (tag, message, valid) => {
     error.textContent = message;
   } else {
     if (isSubmit && valid) {
-      amountOfErrors--;
+      potentialErrors--;
     }
     container.classList.remove("error");
     error.textContent = message;
@@ -151,8 +152,8 @@ inputsToCheck.forEach((input) => {
 /* SUBMIT ET APPLIQUE LES ERREURS SI EXISTANTES VIA WATCHINPUTONACTION */
 form.addEventListener("submit", (e) => {
   e.preventDefault();
-  // à chaque submit on reset le nombre d'erreurs
-  let potentialErrors = inputsToCheck.length - (radios.length - 1);
+  // à chaque submit on reset le nombre d'erreurs potentielles à zero
+  potentialErrors = inputsToCheck.length - (radios.length - 1);
   // on set sur true pour indiquer à la fn errorDisplay qu'elle est joué dans le cadre d'un submit
   isSubmit = true;
   // verifie la conformité de tous les inputs à vérifier et décrémente amountoferrors pour chaque input valide
