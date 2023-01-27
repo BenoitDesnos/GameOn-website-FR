@@ -24,94 +24,6 @@ let isSubmit = false;
 
 /* <-------------------------------------------------------------------------------------------------------------------------------------------> */
 
-/* <---------------------------------------------- Fonctions de verifications des inputs --------------------------------------------------------------------> */
-
-//valuechhecker verifie la conformité des valeurs dans les inputs de type text, email et number
-const valueChecker = (input, regex) => {
-  // variables
-  let value = input.value;
-  let id = input.id;
-  let idDataset = document.getElementById(id).dataset;
-  //conditions
-  if (value.length === 0) {
-    errorDisplay(id, idDataset.errorempty, false);
-  } else if ((value.length < 2 || value.length > 60) && isNaN(value)) {
-    errorDisplay(id, idDataset.errorlength, false);
-  } else if (regex && !value.match(regex)) {
-    errorDisplay(id, idDataset.errorregex, false);
-  } else {
-    errorDisplay(id, "", true);
-  }
-};
-
-//booleanChecker verifie si les inputs de type boolean sont checked
-function booleanChecker(checked, id) {
-  if (id === "radioContainer" && checked) {
-    isOneRadioChecked = true;
-  } else if (id !== "radioContainer") {
-    isOneRadioChecked = false;
-  }
-  if (checked) {
-    errorDisplay(id, "", true);
-  } else if (!checked && !isOneRadioChecked) {
-    errorDisplay(
-      id,
-      document.getElementById(id).dataset.errornotchecked,
-      false
-    );
-  }
-}
-
-/* <-------------------------------------------------------------------------------------------------------------------------------------------> */
-
-// fn gérant l'affichage des erreurs sur le DOM pour chaque fn de vérification
-/*  tag = class ou id ou selecteur 
-    message = message à afficher selon erreur ou non
-    valid = boolean  // true = no error  false = error */
-const errorDisplay = (tag, message, valid) => {
-  //constantes
-  const container = document.getElementById(tag);
-  const error = document.querySelector("#" + tag + "--error");
-  //condtions
-  if (!valid) {
-    container.classList.add("error");
-    error.textContent = message;
-  } else {
-    if (isSubmit && valid) {
-      potentialErrors--;
-    }
-    container.classList.remove("error");
-    error.textContent = message;
-  }
-};
-
-// les fn ci-dessous gerent l'affichage du message de remerciements après avoir envoyé le form
-
-const displayThanksMessage = () => {
-  formChildrens.forEach((children) => {
-    children.style.display = "none";
-  });
-  /* créé les élements et les appointes sur le dom */
-  let thanksMessage = document.createElement("span");
-  thanksMessage.textContent = "Merci pour votre inscription";
-  thanksMessage.classList.add("thanks-message");
-  modalBody.appendChild(thanksMessage);
-
-  let closeButton = document.createElement("button");
-  closeButton.textContent = "Fermer";
-  closeButton.classList.add("btn-close");
-  closeButton.classList.add("close-on-click");
-  modalBody.appendChild(closeButton);
-};
-
-const closeThanksMessageOnClick = () => {
-  Array.from(modalClose).forEach((btn) =>
-    btn.addEventListener("click", () => {
-      window.location.reload();
-    })
-  );
-};
-
 //Cette fonction lance les fonctions de vérifications sur le ou les champs concernés
 //elle est appelée dans l'eventlistner d'input et de submit
 function watchInputOnAction(input) {
@@ -140,6 +52,66 @@ function watchInputOnAction(input) {
   }
 }
 
+/* <---------------------------------------------- Fonctions de verifications des inputs --------------------------------------------------------------------> */
+
+//valuechhecker verifie la conformité des valeurs dans les inputs de type text, email et number
+const valueChecker = (input, regex) => {
+  // variables
+  let value = input.value;
+  let id = input.id;
+  let idDataset = document.getElementById(id).dataset;
+  //conditions
+  if (value.length === 0) {
+    errorDisplay(id, idDataset.errorEmpty, false);
+  } else if ((value.length < 2 || value.length > 60) && isNaN(value)) {
+    errorDisplay(id, idDataset.errorLength, false);
+  } else if (regex && !value.match(regex)) {
+    errorDisplay(id, idDataset.errorRegex, false);
+  } else {
+    errorDisplay(id, "", true);
+  }
+};
+
+//booleanChecker verifie si les inputs de type boolean sont checked
+function booleanChecker(checked, id) {
+  if (id === "radioContainer" && checked) {
+    isOneRadioChecked = true;
+  } else if (id !== "radioContainer") {
+    isOneRadioChecked = false;
+  }
+  if (checked) {
+    errorDisplay(id, "", true);
+  } else if (!checked && !isOneRadioChecked) {
+    errorDisplay(
+      id,
+      document.getElementById(id).dataset.errorNotChecked,
+      false
+    );
+  }
+}
+
+/* <-------------------------------------------------------------------------------------------------------------------------------------------> */
+
+// fn gérant l'affichage des erreurs sur le DOM pour chaque fn de vérification
+/*  tag = id 
+    message = message à afficher selon erreur ou non
+    valid = boolean  // true = no error  false = error */
+const errorDisplay = (tag, message, valid) => {
+  //constantes
+  const container = document.getElementById(tag);
+  const error = document.querySelector("#" + tag + "--error");
+  //condtions
+  if (!valid) {
+    container.classList.add("error");
+    error.textContent = message;
+  } else {
+    if (isSubmit && valid) {
+      potentialErrors--;
+    }
+    container.classList.remove("error");
+    error.textContent = message;
+  }
+};
 /* -----------------------EventListener -------------------------- */
 
 /* INPUTS ET APPLIQUE LES ERREURS SI EXISTANTES VIA WATCHINPUTONACTION */
@@ -152,16 +124,16 @@ inputsToCheck.forEach((input) => {
 /* SUBMIT ET APPLIQUE LES ERREURS SI EXISTANTES VIA WATCHINPUTONACTION */
 form.addEventListener("submit", (e) => {
   e.preventDefault();
-  // à chaque submit on reset le nombre d'erreurs potentielles à zero
+  // à chaque submit on reset le nombre d'erreurs potentielles
   potentialErrors = inputsToCheck.length - (radios.length - 1);
   // on set sur true pour indiquer à la fn errorDisplay qu'elle est joué dans le cadre d'un submit
   isSubmit = true;
-  // verifie la conformité de tous les inputs à vérifier et décrémente amountoferrors pour chaque input valide
+  // verifie la conformité de tous les inputs à vérifier et décrémente (dans errorsDisplay) potentialErrors pour chaque input valide
   inputsToCheck.forEach((input) => {
     watchInputOnAction(input);
   });
   isSubmit = false;
-  // verifie si au moins une erreur est présente
+  // vérifie si aucune erreur n'est présente
   if (potentialErrors === 0) {
     displayThanksMessage();
     closeThanksMessageOnClick();
@@ -169,3 +141,30 @@ form.addEventListener("submit", (e) => {
 });
 
 /* ---------------------------------------------------------------- */
+
+// les fn ci-dessous gerent l'affichage du message de remerciements après avoir envoyé le form
+
+const displayThanksMessage = () => {
+  formChildrens.forEach((children) => {
+    children.style.display = "none";
+  });
+  /* créé les élements et les appointes sur le dom */
+  let thanksMessage = document.createElement("span");
+  thanksMessage.textContent = "Merci pour votre inscription";
+  thanksMessage.classList.add("thanks-message");
+  modalBody.appendChild(thanksMessage);
+
+  let closeButton = document.createElement("button");
+  closeButton.textContent = "Fermer";
+  closeButton.classList.add("btn-close");
+  closeButton.classList.add("close-on-click");
+  modalBody.appendChild(closeButton);
+};
+
+const closeThanksMessageOnClick = () => {
+  Array.from(modalClose).forEach((btn) =>
+    btn.addEventListener("click", () => {
+      window.location.reload();
+    })
+  );
+};

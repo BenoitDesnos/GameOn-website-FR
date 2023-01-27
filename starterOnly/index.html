@@ -66,9 +66,9 @@
                   type="text"
                   class="text-control"
                   id="first"
-                  data-errorregex="Le prénom ne doit pas contenir de caractères spéciaux"
-                  data-errorempty="Merci de choisir un prénom"
-                  data-errorLength="Ce champ doit comprendre entre 2 et 60 caractères"
+                  data-error-regex="Le prénom ne doit pas contenir de caractères spéciaux"
+                  data-error-empty="Merci de choisir un prénom"
+                  data-error-length="Ce champ doit comprendre entre 2 et 60 caractères"
                   name="first"
                   minlength="2"
                 />
@@ -80,9 +80,9 @@
                   type="text"
                   class="text-control"
                   id="last"
-                  data-errorregex="Le nom ne doit pas contenir de caractères spéciaux"
-                  data-errorempty="Merci de choisir un nom"
-                  data-errorLength="Ce champ doit comprendre entre 2 et 60 caractères"
+                  data-error-regex="Le nom ne doit pas contenir de caractères spéciaux"
+                  data-error-empty="Merci de choisir un nom"
+                  data-error-length="Ce champ doit comprendre entre 2 et 60 caractères"
                   name="last"
                 />
                 <p id="last--error" class="error"></p>
@@ -93,9 +93,9 @@
                   type="email"
                   class="text-control"
                   id="email"
-                  data-errorregex="Le mail n'est pas valide"
-                  data-errorempty="Merci de choisir une adresse email"
-                  data-errorLength="Le mail n'est pas valide"
+                  data-error-regex="Le mail n'est pas valide"
+                  data-error-empty="Merci de choisir une adresse email"
+                  data-error-length="Le mail n'est pas valide"
                   name="email"
                 />
                 <p id="email--error" class="error"></p>
@@ -106,8 +106,8 @@
                   type="date"
                   class="text-control"
                   id="birthdate"
-                  data-errorregex="Merci de choisir une date conforme"
-                  data-errorempty="Merci de choisir une date de naissance"
+                  data-error-regex="Merci de choisir une date conforme"
+                  data-error-empty="Merci de choisir une date de naissance"
                   name="birthdate"
                 />
                 <p id="birthdate--error" class="error"></p>
@@ -121,8 +121,8 @@
                   type="number"
                   class="text-control"
                   id="quantity"
-                  data-errorregex="Merci de choisir un chiffre ou un nombre"
-                  data-errorempty="Merci de choisir un chiffre ou un nombre"
+                  data-error-regex="Merci de choisir un chiffre ou un nombre"
+                  data-error-empty="Merci de choisir un chiffre ou un nombre"
                   name="quantity"
                   min="0"
                   max="99"
@@ -135,7 +135,7 @@
               <div
                 class="formData"
                 id="radioContainer"
-                data-errornotchecked="Merci de choisir une ville"
+                data-error-not-checked="Merci de choisir une ville"
               >
                 <input
                   class="checkbox-input"
@@ -211,7 +211,7 @@
                   class="checkbox-input"
                   type="checkbox"
                   id="checkbox1"
-                  data-errornotchecked="Merci d'accepter les CGU"
+                  data-error-not-checked="Merci d'accepter les CGU"
                 />
                 <label class="checkbox2-label" for="checkbox1">
                   <span class="checkbox-icon"></span>
