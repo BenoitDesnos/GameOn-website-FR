@@ -501,6 +501,7 @@ input[data-error]::after {
   color: #fff;
   position: relative;
   text-align: left;
+  width: 100%;
 }
 .hero-content::after {
   content: "";

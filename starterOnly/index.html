@@ -1,58 +1,46 @@
 <!DOCTYPE html>
 <html lang="fr">
-  <head>
-    <meta charset="utf-8" />
-    <title>Reservation</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <link rel="stylesheet" href="modal.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-    />
-    <link
-      href="https://fonts.googleapis.com/css?family=DM+Sans"
-      rel="stylesheet"
-    />
-  </head>
 
-  <body>
-    <div class="topnav" id="myTopnav">
-      <div class="header-logo">
-        <img alt="logo" src="Logo.png" />
-      </div>
-      <div class="main-navbar">
-        <a href="#" class="active"><span>Accueil</span></a>
-        <a href="#"><span>Détails de l'évènement</span></a>
-        <a href="#"><span>À propos</span></a>
-        <a href="#"><span>Contact</span></a>
-        <a href="#"><span>Évènements passés</span></a>
-        <a
-          href="javascript:void(0);"
-          class="icon"
-          id="button-menu"
-          onclick="editNav()"
-        >
-          <i class="fa fa-bars"></i>
-        </a>
-      </div>
+<head>
+  <meta charset="utf-8" />
+  <title>Reservation</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="modal.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link href="https://fonts.googleapis.com/css?family=DM+Sans" rel="stylesheet" />
+</head>
+
+<body>
+  <div class="topnav" id="myTopnav">
+    <div class="header-logo">
+      <img alt="logo" src="Logo.png" />
     </div>
-    <main>
-      <div class="hero-section">
-        <div class="hero-content">
-          <h1 class="hero-headline">
-            Marathon national<br />
-            de jeux vidéos
-          </h1>
-          <p class="hero-text">
-            Vous aimez jouer ? Notre prochain évènement gaming est ouvert aux
-            réservations... Places limitées !
-          </p>
-          <button class="btn-signup modal-btn">je m'inscris</button>
-        </div>
-        <div class="hero-img">
-          <img src="./bg_img.jpg" alt="img" />
-        </div>
+    <div class="main-navbar">
+      <a href="#" class="active"><span>Accueil</span></a>
+      <a href="#"><span>Détails de l'évènement</span></a>
+      <a href="#"><span>À propos</span></a>
+      <a href="#"><span>Contact</span></a>
+      <a href="#"><span>Évènements passés</span></a>
+      <a href="javascript:void(0);" class="icon" id="button-menu" onclick="editNav()">
+        <i class="fa fa-bars"></i>
+      </a>
+    </div>
+  </div>
+  <main>
+    <div class="hero-section">
+      <div class="hero-content">
+        <h1 class="hero-headline">
+          Marathon national<br />
+          de jeux vidéos
+        </h1>
+        <p class="hero-text">
+          Vous aimez jouer ? Notre prochain évènement gaming est ouvert aux
+          réservations... Places limitées !
+        </p>
         <button class="btn-signup modal-btn">je m'inscris</button>
+      </div>
+      <div class="hero-img">
+        <img src="./bg_img.jpg" alt="img" />
       </div>
 
       <div class="bground">
@@ -62,157 +50,76 @@
             <form name="reserve" action="index.html" method="get">
               <div class="formData">
                 <label for="first">Prénom</label><br />
-                <input
-                  type="text"
-                  class="text-control"
-                  id="first"
+                <input type="text" class="text-control" id="first"
                   data-error-regex="Le prénom ne doit pas contenir de caractères spéciaux"
                   data-error-empty="Merci de choisir un prénom"
-                  data-error-length="Ce champ doit comprendre entre 2 et 60 caractères"
-                  name="first"
-                  minlength="2"
-                />
+                  data-error-length="Ce champ doit comprendre entre 2 et 60 caractères" name="first" minlength="2" />
                 <p id="first--error" class="error"></p>
               </div>
               <div class="formData">
                 <label for="last">Nom</label><br />
-                <input
-                  type="text"
-                  class="text-control"
-                  id="last"
+                <input type="text" class="text-control" id="last"
                   data-error-regex="Le nom ne doit pas contenir de caractères spéciaux"
                   data-error-empty="Merci de choisir un nom"
-                  data-error-length="Ce champ doit comprendre entre 2 et 60 caractères"
-                  name="last"
-                />
+                  data-error-length="Ce champ doit comprendre entre 2 et 60 caractères" name="last" />
                 <p id="last--error" class="error"></p>
               </div>
               <div class="formData">
                 <label for="email">E-mail</label><br />
-                <input
-                  type="email"
-                  class="text-control"
-                  id="email"
-                  data-error-regex="Le mail n'est pas valide"
-                  data-error-empty="Merci de choisir une adresse email"
-                  data-error-length="Le mail n'est pas valide"
-                  name="email"
-                />
+                <input type="email" class="text-control" id="email" data-error-regex="Le mail n'est pas valide"
+                  data-error-empty="Merci de choisir une adresse email" data-error-length="Le mail n'est pas valide"
+                  name="email" />
                 <p id="email--error" class="error"></p>
               </div>
               <div class="formData">
                 <label for="birthdate">Date de naissance</label><br />
-                <input
-                  type="date"
-                  class="text-control"
-                  id="birthdate"
+                <input type="date" class="text-control" id="birthdate"
                   data-error-regex="Merci de choisir une date conforme"
-                  data-error-empty="Merci de choisir une date de naissance"
-                  name="birthdate"
-                />
+                  data-error-empty="Merci de choisir une date de naissance" name="birthdate" />
                 <p id="birthdate--error" class="error"></p>
               </div>
               <div class="formData">
-                <label for="quantity"
-                  >À combien de tournois GameOn avez-vous déjà participé
-                  ?</label
-                ><br />
-                <input
-                  type="number"
-                  class="text-control"
-                  id="quantity"
+                <label for="quantity">À combien de tournois GameOn avez-vous déjà participé
+                  ?</label><br />
+                <input type="number" class="text-control" id="quantity"
                   data-error-regex="Merci de choisir un chiffre ou un nombre"
-                  data-error-empty="Merci de choisir un chiffre ou un nombre"
-                  name="quantity"
-                  min="0"
-                  max="99"
-                />
+                  data-error-empty="Merci de choisir un chiffre ou un nombre" name="quantity" min="0" max="99" />
                 <p id="quantity--error" class="error"></p>
               </div>
               <p class="text-label">
                 A quel tournoi souhaitez-vous participer cette année ?
               </p>
-              <div
-                class="formData"
-                id="radioContainer"
-                data-error-not-checked="Merci de choisir une ville"
-              >
-                <input
-                  class="checkbox-input"
-                  type="radio"
-                  id="location1"
-                  name="location"
-                  value="New York"
-                />
+              <div class="formData" id="radioContainer" data-error-not-checked="Merci de choisir une ville">
+                <input class="checkbox-input" type="radio" id="location1" name="location" value="New York" />
                 <label class="checkbox-label" for="location1">
                   <span class="checkbox-icon"></span>
-                  New York</label
-                >
-                <input
-                  class="checkbox-input"
-                  type="radio"
-                  id="location2"
-                  name="location"
-                  value="San Francisco"
-                />
+                  New York</label>
+                <input class="checkbox-input" type="radio" id="location2" name="location" value="San Francisco" />
                 <label class="checkbox-label" for="location2">
                   <span class="checkbox-icon"></span>
-                  San Francisco</label
-                >
-                <input
-                  class="checkbox-input"
-                  type="radio"
-                  id="location3"
-                  name="location"
-                  value="Seattle"
-                />
+                  San Francisco</label>
+                <input class="checkbox-input" type="radio" id="location3" name="location" value="Seattle" />
                 <label class="checkbox-label" for="location3">
                   <span class="checkbox-icon"></span>
-                  Seattle</label
-                >
-                <input
-                  class="checkbox-input"
-                  type="radio"
-                  id="location4"
-                  name="location"
-                  value="Chicago"
-                />
+                  Seattle</label>
+                <input class="checkbox-input" type="radio" id="location4" name="location" value="Chicago" />
                 <label class="checkbox-label" for="location4">
                   <span class="checkbox-icon"></span>
-                  Chicago</label
-                >
-                <input
-                  class="checkbox-input"
-                  type="radio"
-                  id="location5"
-                  name="location"
-                  value="Boston"
-                />
+                  Chicago</label>
+                <input class="checkbox-input" type="radio" id="location5" name="location" value="Boston" />
                 <label class="checkbox-label" for="location5">
                   <span class="checkbox-icon"></span>
-                  Boston</label
-                >
-                <input
-                  class="checkbox-input"
-                  type="radio"
-                  id="location6"
-                  name="location"
-                  value="Portland"
-                />
+                  Boston</label>
+                <input class="checkbox-input" type="radio" id="location6" name="location" value="Portland" />
                 <label class="checkbox-label" for="location6">
                   <span class="checkbox-icon"></span>
-                  Portland</label
-                >
+                  Portland</label>
               </div>
               <p id="radioContainer--error" class="error"></p>
 
               <div class="formData">
-                <input
-                  class="checkbox-input"
-                  type="checkbox"
-                  id="checkbox1"
-                  data-error-not-checked="Merci d'accepter les CGU"
-                />
+                <input class="checkbox-input" type="checkbox" id="checkbox1"
+                  data-error-not-checked="Merci d'accepter les CGU" />
                 <label class="checkbox2-label" for="checkbox1">
                   <span class="checkbox-icon"></span>
                   J'ai lu et accepté les conditions d'utilisation.
@@ -225,20 +132,17 @@
                 </label>
                 <br />
               </div>
-              <input
-                class="button btn-submit"
-                type="submit"
-                value="C'est parti"
-              />
+              <input class="button btn-submit" type="submit" value="C'est parti" />
             </form>
           </div>
         </div>
       </div>
-    </main>
-    <footer>
-      <p class="copyrights">Copyright 2014 - 2022, GameOn Inc.</p>
-    </footer>
-    <script src="js/modal.js"></script>
-    <script src="js/form.js"></script>
-  </body>
+  </main>
+  <footer>
+    <p class="copyrights">Copyright 2014 - 2022, GameOn Inc.</p>
+  </footer>
+  <script src="js/modal.js"></script>
+  <script src="js/form.js"></script>
+</body>
+
 </html>

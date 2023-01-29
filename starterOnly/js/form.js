@@ -18,7 +18,6 @@ const regexEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
 const regexBirthDate =
   /^(?:19|20)\d\d([\/.-])(?:0[1-9]|1[012])\1(?:0[1-9]|[12]\d|3[01])$/gm;
 //variables
-let isOneRadioChecked = false;
 let potentialErrors;
 let isSubmit = false;
 
@@ -44,7 +43,7 @@ function watchInputOnAction(input) {
       booleanChecker(input.checked, input.id);
       break;
     case "radio":
-      booleanChecker(input.checked, "radioContainer");
+      radioChecker(input.checked, "radioContainer");
       break;
     default:
       valueChecker(input, null);
@@ -74,12 +73,22 @@ const valueChecker = (input, regex) => {
 
 //booleanChecker verifie si les inputs de type boolean sont checked
 function booleanChecker(checked, id) {
-  if (id === "radioContainer" && checked) {
-    isOneRadioChecked = true;
-  } else if (id !== "radioContainer") {
-    isOneRadioChecked = false;
-  }
   if (checked) {
+    errorDisplay(id, "", true);
+  } else {
+    errorDisplay(
+      id,
+      document.getElementById(id).dataset.errorNotChecked,
+      false
+    );
+  }
+}
+
+//radioChecker verifie si au moins une radio est checked
+function radioChecker(checked, id) {
+  let isOneRadioChecked = false;
+  if (checked) {
+    isOneRadioChecked = true;
     errorDisplay(id, "", true);
   } else if (!checked && !isOneRadioChecked) {
     errorDisplay(
